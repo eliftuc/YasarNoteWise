@@ -40,7 +40,7 @@ This project is specifically tailored for **Yaşar University students**, making
 ![Image](https://github.com/user-attachments/assets/c9ac9684-8406-4953-aa21-3029b447c2c0)
 
 
-🖼 **Screenshot: All Saved Notes**  
+**Screenshot: All Saved Notes**  
 ![Image](https://github.com/user-attachments/assets/82b87fd4-e7ba-4f9e-9966-979c8456aae5)
 
 ---
