@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="grade-form-container">
+    <div class="grade-form-header">
+        <h2>{{ course.course_name }}</h2>
+        <!-- Display the course name -->
+    </div>
+
+    <div class="note-form-section">
+        <div class="section-title">
+            <h3>Add New Note</h3>
+            <!-- Title for the note form section -->
+            <div class="title-underline"></div>
+        </div>
+        <form method="POST" enctype="multipart/form-data" class="grade-form">
+            <div class="form-group note-textarea-group">
+                <label class="form-label" for="note">Note</label>
+                <textarea id="note" name="note" class="form-input note-textarea" rows="12" required
+                    placeholder="You can write your course notes here...&#10;&#10;Tip: For more organized notes:&#10;• Use headings&#10;• Add bullet points&#10;• Highlight important parts"></textarea>
+                <!-- Textarea for adding notes -->
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="image">Image (Optional)</label>
+                <div class="file-upload-wrapper">
+                    <input type="file" id="image" name="image" class="form-input file-input" accept="image/*">
+                    <div class="file-upload-preview">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <span class="file-name">Click or drag to add an image</span>
+                    </div>
+                </div>
+                <!-- Optional file upload for images -->
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-plus"></i> Add Note
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="notes-section">
+        <div class="section-title">
+            <h3>My Notes</h3>
+            <!-- Title for the section displaying existing notes -->
+            <div class="title-underline"></div>
+        </div>
+
+        {% if notes %}
+            {% for note in notes %}
+            <div class="note-card">
+                <div class="note-header">
+                    <span class="note-date">
+                        {{ note.created_at.astimezone().strftime('%d/%m/%Y %H:%M') }}
+                    </span>
+                    <!-- Display the creation date of the note -->
+                    <div class="note-actions">
+                        <button class="edit-btn" onclick="editNote({{ note.id }}, this)">
+                            <i class="fa-solid fa-pen"></i> Edit
+                        </button>
+                        <form action="{{ url_for('delete_note', note_id=note.id) }}" method="POST" class="delete-form">
+                            <button type="submit" class="delete-btn" onclick="return confirm('Are you sure you want to delete this note?')">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </form>
+                        <!-- Buttons for editing or deleting notes -->
+                    </div>
+                </div>
+                <div class="note-content">
+                    <p class="note-text">{{ note.notes }}</p>
+                    <!-- Display the text content of the note -->
+                    {% if note.image_path %}
+                    <img src="{{ url_for('static', filename='uploads/' + note.image_path) }}" alt="Note image" class="note-image">
+                    <!-- Display the image if it exists -->
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="no-notes">
+                <i class="fas fa-book-open"></i>
+                <p>No notes added yet.</p>
+                <!-- Message displayed if no notes exist -->
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

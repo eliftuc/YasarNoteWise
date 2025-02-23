@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="top-banner">
+    <h1>Course Management System</h1>
+    <p>Manage your courses easily and organize your notes</p>
+</div>
+
+<div class="container">
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <!-- Department Selection -->
+    <div class="department-selection">
+        <div class="department-grid">
+            {% for department in departments %}
+            <div class="department-card">
+                <div class="department-icon">
+                    <i class="fas fa-university"></i>
+                </div>
+                <h2 class="department-name">{{ department.name }}</h2>
+                <div class="year-buttons">
+                    {% for year in range(1, 5) %}
+                    <a href="{{ url_for('courses', dept_id=department.id, year=year) }}"
+                       class="year-button">
+                        Year {{ year }}
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Current Courses Summary -->
+    {% if current_courses %}
+    <div class="current-courses-summary">
+        <h2>Courses This Semester</h2>
+        <div class="current-courses-grid">
+            {% for course in current_courses %}
+            <div class="current-course-card">
+                <div class="course-details">
+                    <h3 class="course-name">{{ course.course_name }}</h3>
+                    <p class="course-info">{{ course.department.name }} - {{ course.year }}. Year</p>
+                    <p class="semester-info">{{ course.semester }} Semester</p>
+                </div>
+                <div class="course-actions">
+                    <a href="{{ url_for('add_note', course_id=course.id) }}" class="btn btn-secondary">
+                        <i class="fas fa-sticky-note"></i> Notes
+                    </a>
+                    {% if 'ELECTIVE' in course.course_name.upper() or 'ELECT' in course.course_name.upper() %}
+                    <a href="{{ url_for('edit_elective', course_id=course.id) }}" class="btn btn-info">
+                        <i class="fas fa-edit"></i> Edit
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="view-all-link">
+            <a href="{{ url_for('current_courses') }}" class="btn btn-primary">
+                <i class="fas fa-list"></i> View All Courses
+            </a>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Recently Added Notes -->
+    {% if recent_notes %}
+    <div class="recent-notes">
+        <h2>Recently Added Notes</h2>
+        <div class="notes-grid">
+            {% for note in recent_notes %}
+            <div class="note-card">
+                <div class="note-header">
+                    <h3 class="note-course">{{ note.course.course_name }}</h3>
+                    <span class="note-date">{{ note.created_at.strftime('%d.%m.%Y') }}</span>
+                </div>
+                <div class="note-content">
+                    <p class="note-text">{{ note.content[:100] }}{% if note.content|length > 100 %}...{% endif %}</p>
+                    {% if note.image_path %}
+                    <div class="note-image-preview">
+                        <img src="{{ url_for('static', filename=note.image_path) }}" alt="Note image">
+                    </div>
+                    {% endif %}
+                </div>
+                <a href="{{ url_for('add_note', course_id=note.course.id) }}" class="btn btn-secondary btn-sm">
+                    <i class="fas fa-eye"></i> View Details
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Font Awesome CDN -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+{% endblock %}

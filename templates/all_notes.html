@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="grade-form-container">
+    <div class="grade-form-header">
+        <h2>All My Notes</h2>
+    </div>
+
+    <div class="notes-section">
+        {% if notes %}
+            {% for note in notes %}
+            <div class="note-card">
+                <div class="note-header">
+                    <div class="note-info">
+                        <!-- Displays course name and the creation date of the note -->
+                        <span class="course-name">{{ note.course.course_name }}</span>
+                        <span class="note-date">{{ note.created_at.strftime('%d/%m/%Y %H:%M') }}</span>
+                    </div>
+                    <div class="note-actions">
+                        <!-- Button to edit the note -->
+                        <button class="edit-btn" onclick="editNote({{ note.id }}, this)">
+                            <i class="fa-solid fa-pen"></i> Edit
+                        </button>
+                        <!-- Form to delete the note -->
+                        <form action="{{ url_for('delete_note', note_id=note.id) }}" method="POST" class="delete-form">
+                            <button type="submit" class="delete-btn" onclick="return confirm('Are you sure you want to delete this note?')">
+                                <i class="fa-solid fa-trash"></i> Delete
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="note-content">
+                    <!-- Displays the content of the note -->
+                    <p class="note-text">{{ note.notes }}</p>
+                    {% if note.image_path %}
+                    <!-- If the note has an image, it will be displayed here -->
+                    <img src="{{ url_for('static', filename='uploads/' + note.image_path) }}" alt="Note image" class="note-image">
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="no-notes">
+                <!-- Message displayed if no notes exist -->
+                <i class="fas fa-book-open"></i>
+                <p>No notes added yet.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

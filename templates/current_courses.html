@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="current-courses-container">
+    <h2>My Courses</h2>
+
+    {% if courses %}
+        <div class="courses-list">
+            {% for course in courses %}
+            <div class="course-item">
+                <div class="course-info">
+                    <span class="course-name">{{ course.course_name }}</span>
+                    <span class="course-details">{{ course.department.name }} - Year {{ course.year }} - {{ course.semester }}</span>
+                </div>
+                <div class="course-actions">
+                    <!-- Link to add notes for the course -->
+                    <a href="{{ url_for('add_note', course_id=course.id) }}" class="btn btn-secondary">Notes</a>
+
+                    <!-- Edit button for elective courses -->
+                    {% if 'ELECTIVE' in course.course_name.upper() or 'ELECT' in course.course_name.upper() %}
+                    <a href="{{ url_for('edit_elective', course_id=course.id) }}" class="btn btn-info">Edit</a>
+                    {% endif %}
+
+                    <!-- Button to remove the course from current courses -->
+                    <form action="{{ url_for('toggle_current_course', course_id=course.id) }}" method="POST" class="inline-form">
+                        <button type="submit" class="btn btn-danger">Remove Course</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <!-- Message when no courses are selected -->
+        <p class="no-courses">No selected courses for this semester yet.</p>
+        <a href="{{ url_for('index') }}" class="btn btn-primary">Select Courses</a>
+    {% endif %}
+</div>
+{% endblock %}
