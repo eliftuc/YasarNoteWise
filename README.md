@@ -6,7 +6,7 @@ This project is specifically tailored for **Yaşar University students**, making
 
 ---
 
-## 📌 Features & Functionalities
+## Features & Functionalities
 
 ###  Course Management
 - **Browse Courses:** View all engineering departments and select the relevant one.
@@ -84,9 +84,9 @@ This project is specifically tailored for **Yaşar University students**, making
 
 ## Why YasarNoteWise?
 This project is designed for **Yaşar University Engineering students** to:  
-✅ **Organize their courses efficiently**  
-✅ **Track enrolled subjects**  
-✅ **Store and manage notes effectively**  
-✅ **Enhance study habits**  
+ **Organize their courses efficiently**  
+ **Track enrolled subjects**  
+ **Store and manage notes effectively**  
+ **Enhance study habits**  
 
 YasarNoteWise is **more than a course tracker**; it’s a **personalized academic assistant**! 
